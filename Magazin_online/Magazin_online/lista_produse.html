@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista produse</title>
+</head>
+<body>
+    <h1>Lista produse</h1>
+    <ul>
+        {% for produs in produse %}
+            <li>{{ produs.nume }}: {{ produs.pret }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

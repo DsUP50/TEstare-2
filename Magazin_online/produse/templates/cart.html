@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Coș de cumpărături</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        /* Include the same CSS as in home.html */
+        /* ... */
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Coș de cumpărături</h1>
+    </header>
+    
+    <main id="cart">
+        {% for id, item in cart.items %}
+            <div class="cart-item">
+                <h2>{{ item.nume }}</h2>
+                <img src="{{ item.imagine }}" alt="{{ item.nume }}">
+                <p>Quantity: <input type="number" value="{{ item.quantity }}" min="1"></p>
+                <p>Price: {{ item.pret }}</p>
+                <button data-id="{{ id }}" class="remove-from-cart">Remove from cart</button>
+            </div>
+        {% empty %}
+            <p>Your cart is empty.</p>
+        {% endfor %}
+    </main>
+    
+    <footer>
+        <p>Shipping Information | Contact Information</p>
+    </footer>
+    
+    <a href="{% url 'account' %}">User Account</a>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        var removeFromCartButtons = document.querySelectorAll('.remove-from-cart');
+
+        removeFromCartButtons.forEach(function(button) {
+            button.addEventListener('click', function(event) {
+                var id = event.target.getAttribute('data-id');
+
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "remove_from_cart" %}',
+                    data: {
+                        'id': id,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            alert('Produsul a fost eliminat din coș.');
+                            location.reload();
+                        } else {
+                            alert('A apărut o eroare la eliminarea produsului din coș.');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+

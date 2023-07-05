@@ -1,0 +1,17 @@
+{% extends "produse/base_generic.html" %}
+
+{% block content %}
+  <h2>Lista produse</h2>
+  <ul>
+    {% for produs in produse %}
+      <li>{{ produs.nume }}: {{ produs.descriere }}</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
+<h2>Adauga produs</h2>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Adauga</button>
+</form>
+
